@@ -1,42 +1,138 @@
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
+typedef struct {
+    int id;
+    char name[50];
+    int age;
+    char group[20];
+} Student;
+
+int c = 0;
+
+char newName[50];    // новое имя
+int newAge;          // новый возраст
+char newGroup[50];   // новая группа
+
+Student* search(char name[], Student students[], int count) {
+    for (int i = 0; i < count; i++) {
+        if (strcmp(name, students[i].name) == 0) {
+            return &students[i];
+        }
+    }
+    return NULL;
+}
+
+void deleteStudentById(Student students[], int *count, int id) {
+    int index = -1;
+
+    for (int i = 0; i < *count; i++) {
+        if (students[i].id == id) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) {
+        printf("Not found\n");
+        return;
+    }
+
+    for (int i = index; i < *count - 1; i++) {
+        students[i] = students[i + 1];
+    }
+
+    (*count)--;
+}
+
+
 int main(void) {
+    Student students[100];
+    printf("\n Welcome to student managment system \n");
     char ch;
-    char adc;
+    int z = 0;
     while (1) {
-        // Сначала показываем меню
-        printf("\na for add students\n");
+        //while ((getchar()) != '\n'); // очищаем буфер
+
+        printf("a for add students\n");
         printf("d for delete students\n");
         printf("s for show students\n");
         printf("u for update students\n");
         printf("q for quit\n");
         printf("Select option: ");
-
-        // Потом ждём ввод
         ch = getchar();
-        if (ch == '\n') continue;
-
-        // Очищаем буфер от Enter
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+        while ((getchar()) != '\n');
 
         if (ch == 'a') {
-            printf("Add user name...\n");
-            adc = getchar();
+            printf("Name: ");
+            scanf("%49s", students[c].name);
+            printf("Age: ");
+            scanf("%d", &students[c].age);
+            printf("Group: ");
+            scanf("%49s", students[c].group);
+            while ((getchar()) != '\n'); // очищаем буфер после scanf
+            c++;
+            students[c].id = z;
+            printf("Stident added\n");
+            z++;
         } else if (ch == 'd') {
-            printf("Deleting student...\n");
+            printf("Add id who you want delete...\n");
+            char name[50];
+            printf("Enter name: ");
+            scanf("%49s", name);
+            Student* st = search(name, students, c);
+
+            if (st != NULL) {
+                deleteStudentById(students, &c, st->id);
+                printf("Deleted!\n");
+            } else {
+                printf("Student not found\n");
+            }
+
         } else if (ch == 's') {
+            if (c == 0) {
+                printf("List is empty!\n");
+            } else {
+                for (int i = 0; i < c; i++) {
+                   // printf("id: %i name:%d. %s | %d age | %s\n",
+                    printf("ID: %d | Name: %s | Age: %d | Group: %s\n",
+                        i + 1,
+                        students[i].id,
+                        students[i].name,
+                        students[i].age,
+                        students[i].group);
+                }
+            }
             printf("Showing students...\n");
         } else if (ch == 'u') {
-            printf("Updating student...\n");
-        } else if (ch == 'q') {
-            printf("Exit...\n");
-            break;
-        } else {
-            printf("Unknown option: '%c'\n", ch);
-        }
-    }
+            printf("Add name who you want update...\n");
+            char name[50];
+            printf("Enter name: ");
+            scanf("%49s", name);
+            Student* st = search(name, students, c);
+            if (st != NULL) {
+                printf("Enter new name: ");
+                scanf("%49s", newName);
+                strcpy(st->name, newName);  // копируем строку
 
-    return 0;
-}
+                printf("Enter new age: ");
+                scanf("%d", &newAge);       // обязательно & для int
+                st->age = newAge;
+
+                printf("Enter new group: ");
+                scanf("%49s", newGroup);
+                strcpy(st->group, newGroup);
+
+                printf("Student updated!\n");
+            }
+            } else if (ch == 'q') {
+                printf("Exit...\n");
+                break;
+            } else {
+                printf("Unknown option: '%c'\n", ch);
+            }
+        }
+
+        return 0;
+    }
