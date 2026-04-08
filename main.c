@@ -11,9 +11,7 @@ typedef struct {
 
 int c = 0;
 
-char newName[50];    // новое имя
-int newAge;          // новый возраст
-char newGroup[50];   // новая группа
+ // new grp
 
 Student* search(char name[], Student students[], int count) {
     for (int i = 0; i < count; i++) {
@@ -47,13 +45,16 @@ void deleteStudentById(Student students[], int *count, int id) {
 }
 
 
+
 int main(void) {
+    int index = 0;
+
     Student students[100];
     printf("\n Welcome to student managment system \n");
     char ch;
-    int z = 0;
+
     while (1) {
-        //while ((getchar()) != '\n'); // очищаем буфер
+       // while ((getchar()) != '\n'); // clear buffer
 
         printf("a for add students\n");
         printf("d for delete students\n");
@@ -72,10 +73,11 @@ int main(void) {
             printf("Group: ");
             scanf("%49s", students[c].group);
             while ((getchar()) != '\n'); // очищаем буфер после scanf
+            students[c].id = index;
+            index++;
             c++;
-            students[c].id = z;
-            printf("Stident added\n");
-            z++;
+            printf("Student added\n");
+
         } else if (ch == 'd') {
             printf("Add id who you want delete...\n");
             char name[50];
@@ -95,19 +97,21 @@ int main(void) {
                 printf("List is empty!\n");
             } else {
                 for (int i = 0; i < c; i++) {
-                   // printf("id: %i name:%d. %s | %d age | %s\n",
                     printf("ID: %d | Name: %s | Age: %d | Group: %s\n",
-                        i + 1,
-                        students[i].id,
-                        students[i].name,
-                        students[i].age,
-                        students[i].group);
+                           students[i].id,     // ID
+                           students[i].name,   // name
+                           students[i].age,    // agge
+                           students[i].group); // group
                 }
             }
             printf("Showing students...\n");
         } else if (ch == 'u') {
-            printf("Add name who you want update...\n");
             char name[50];
+            char newName[50];    // новое имя
+            int newAge;          // новый возраст
+            char newGroup[50];
+            printf("Add name who you want update...\n");
+
             printf("Enter name: ");
             scanf("%49s", name);
             Student* st = search(name, students, c);
@@ -126,6 +130,7 @@ int main(void) {
 
                 printf("Student updated!\n");
             }
+            while ((getchar()) != '\n');
             } else if (ch == 'q') {
                 printf("Exit...\n");
                 break;
