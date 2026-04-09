@@ -107,8 +107,8 @@ int main(void) {
             printf("Showing students...\n");
         } else if (ch == 'u') {
             char name[50];
-            char newName[50];    // новое имя
-            int newAge;          // новый возраст
+            char newName[50];    // new nam
+            int newAge;          // new ag
             char newGroup[50];
             printf("Add name who you want update...\n");
 
@@ -118,7 +118,7 @@ int main(void) {
             if (st != NULL) {
                 printf("Enter new name: ");
                 scanf("%49s", newName);
-                strcpy(st->name, newName);  // копируем строку
+                strcpy(st->name, newName);  //copy lin
 
                 printf("Enter new age: ");
                 scanf("%d", &newAge);       // обязательно & для int
