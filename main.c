@@ -72,7 +72,7 @@ int main(void) {
             scanf("%d", &students[c].age);
             printf("Group: ");
             scanf("%49s", students[c].group);
-            while ((getchar()) != '\n'); // очищаем буфер после scanf
+            while ((getchar()) != '\n'); // sraf cl
             students[c].id = index;
             index++;
             c++;
@@ -121,7 +121,7 @@ int main(void) {
                 strcpy(st->name, newName);  //copy lin
 
                 printf("Enter new age: ");
-                scanf("%d", &newAge);       // обязательно & для int
+                scanf("%d", &newAge);       // necesary int
                 st->age = newAge;
 
                 printf("Enter new group: ");
