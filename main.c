@@ -1,16 +1,34 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 typedef struct {
     int id;
     char name[50];
+    char surname[50];
     int age;
-    char group[20];
 } Student;
 
 int c = 0;
 
+int isValidName(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isdigit(str[i])) {
+            return 0; // есть цифра → ошибка
+        }
+    }
+    return 1; // всё ок
+}
+
+int isValidNumber(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isdigit(str[i])) {
+            return 0; // есть не цифра
+        }
+    }
+    return 1;
+}
  // new grp
 
 Student* search(char name[], Student students[], int count) {
@@ -66,12 +84,39 @@ int main(void) {
         while ((getchar()) != '\n');
 
         if (ch == 'a') {
-            printf("Name: ");
-            scanf("%49s", students[c].name);
-            printf("Age: ");
-            scanf("%d", &students[c].age);
-            printf("Group: ");
-            scanf("%49s", students[c].group);
+            while (1) {
+                printf("Name: ");
+                scanf("%49s", students[c].name);
+
+                if (!isValidName(students[c].name)) {
+                    printf("Error: name must not contain numbers!\n");
+                } else {
+                    break; // всё ок → выходим из цикла
+                }
+            }
+
+
+            while (1) {
+                printf("Surname: ");
+                scanf("%49s", students[c].surname);
+
+                if (!isValidName(students[c].surname)) {
+                    printf("Error: surname must not contain numbers!\n");
+                } else {
+                    break;
+                }
+            }
+
+            while (1) {
+                printf("Age: ");
+                if (scanf("%d", &students[c].age) != 1) {
+                    printf("Error: age must be a number!\n");
+                    while (getchar() != '\n'); // очистка буфера
+                } else {
+                    break;
+                }
+            }
+
             while ((getchar()) != '\n'); // sraf cl
             students[c].id = index;
             index++;
@@ -97,19 +142,21 @@ int main(void) {
                 printf("List is empty!\n");
             } else {
                 for (int i = 0; i < c; i++) {
-                    printf("ID: %d | Name: %s | Age: %d | Group: %s\n",
+                    printf("ID: %d | Name: %s | Surname: %s | Age: %d\n",
                            students[i].id,     // ID
-                           students[i].name,   // name
-                           students[i].age,    // agge
-                           students[i].group); // group
+                           students[i].name,
+                           students[i].surname,// name
+                           students[i].age   // agge
+                           ); // group
                 }
             }
             printf("Showing students...\n");
         } else if (ch == 'u') {
             char name[50];
             char newName[50];    // new nam
+            char surname[50];
             int newAge;          // new ag
-            char newGroup[50];
+
             printf("Add name who you want update...\n");
 
             printf("Enter name: ");
@@ -119,14 +166,12 @@ int main(void) {
                 printf("Enter new name: ");
                 scanf("%49s", newName);
                 strcpy(st->name, newName);  //copy lin
-
+                printf("Enter new surname: ");
+                scanf("%49s", surname);
+                strcpy(st->surname, surname);
                 printf("Enter new age: ");
                 scanf("%d", &newAge);       // necesary int
                 st->age = newAge;
-
-                printf("Enter new group: ");
-                scanf("%49s", newGroup);
-                strcpy(st->group, newGroup);
 
                 printf("Student updated!\n");
             }
